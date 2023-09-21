@@ -1,18 +1,24 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <span>{{helloInfo}}</span>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+<script setup>
 
-export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
-  }
+import {onMounted, ref} from "vue";
+import axios from "axios";
+
+let helloInfo = ref()
+
+const getHelloInfo =async function() {
+  await axios.get('http://localhost:8080/hello').then(res => {
+    helloInfo.value = res.data
+  }).catch(err => {
+    console.log(err)
+  })
 }
+
+onMounted(()=>{
+  getHelloInfo()
+})
+
 </script>
